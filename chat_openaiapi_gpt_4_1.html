@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenAI 相容 API 對話程式</title>
+    <title>OpenAI 相容 API 對話程式 v1.1</title>
     <style>
         body {
             margin: 0;
@@ -21,17 +22,19 @@
             height: 100vh;
             width: 100vw;
         }
+
         #sidebar {
             width: 25%;
             background: linear-gradient(135deg, #e3e8ee 0%, #f5f6fa 100%);
             padding: 24px 14px 10px 14px;
             box-sizing: border-box;
             height: 100vh;
-            box-shadow: 2px 0 12px 0 rgba(40,60,80,0.06);
+            box-shadow: 2px 0 12px 0 rgba(40, 60, 80, 0.06);
             border-radius: 0 18px 18px 0;
             display: flex;
             flex-direction: column;
         }
+
         #main-content {
             width: 75%;
             padding: 24px 24px 10px 24px;
@@ -53,9 +56,11 @@
             box-sizing: border-box;
             background: transparent;
         }
+
         #conversation-list::-webkit-scrollbar {
             width: 8px;
         }
+
         #conversation-list::-webkit-scrollbar-thumb {
             background: #d4dae3;
             border-radius: 5px;
@@ -70,7 +75,7 @@
             margin-bottom: 7px;
             position: relative;
             background: #fff;
-            box-shadow: 0 1px 6px 0 rgba(40,60,80,0.05);
+            box-shadow: 0 1px 6px 0 rgba(40, 60, 80, 0.05);
             transition: background 0.2s, box-shadow 0.2s;
         }
 
@@ -84,12 +89,12 @@
 
         #conversation-list div:hover {
             background: #e9f2ff;
-            box-shadow: 0 2px 10px 0 rgba(60,120,220,0.07);
+            box-shadow: 0 2px 10px 0 rgba(60, 120, 220, 0.07);
         }
 
         #conversation-list div.active {
             background: #d6e8ff;
-            box-shadow: 0 2px 10px 0 rgba(60,120,220,0.12);
+            box-shadow: 0 2px 10px 0 rgba(60, 120, 220, 0.12);
         }
 
         #conversation-list div .delete-btn {
@@ -103,6 +108,7 @@
             font-size: 1.2em;
             transition: color 0.2s;
         }
+
         #conversation-list div .delete-btn:hover {
             color: #ff2222;
         }
@@ -120,7 +126,8 @@
             background: #f7f8fa;
         }
 
-        #settings-container, #image-settings-container {
+        #settings-container,
+        #image-settings-container {
             margin-bottom: 10px;
             width: 100%;
         }
@@ -139,9 +146,10 @@
             text-align: left;
             font-weight: 600;
             font-size: 1.1em;
-            box-shadow: 0 1px 4px 0 rgba(40,60,80,0.04);
+            box-shadow: 0 1px 4px 0 rgba(40, 60, 80, 0.04);
             transition: background 0.2s;
         }
+
         .accordion-button:hover {
             background: #e9f2ff;
         }
@@ -153,7 +161,7 @@
             display: none;
             width: 100%;
             background: #fff;
-            box-shadow: 0 1px 8px 0 rgba(40,60,80,0.07);
+            box-shadow: 0 1px 8px 0 rgba(40, 60, 80, 0.07);
         }
 
         .accordion-content.show {
@@ -169,11 +177,13 @@
             border: none;
             border-radius: 14px;
             background: #fff;
-            box-shadow: 0 2px 18px 0 rgba(40,60,80,0.07);
+            box-shadow: 0 2px 18px 0 rgba(40, 60, 80, 0.07);
         }
+
         #chat-container::-webkit-scrollbar {
             width: 8px;
         }
+
         #chat-container::-webkit-scrollbar-thumb {
             background: #d4dae3;
             border-radius: 5px;
@@ -186,7 +196,7 @@
             margin-bottom: 10px;
             position: relative;
             background: #f7f8fa;
-            box-shadow: 0 1px 8px 0 rgba(40,60,80,0.07);
+            box-shadow: 0 1px 8px 0 rgba(40, 60, 80, 0.07);
         }
 
         #chat-container div:nth-child(even) {
@@ -194,65 +204,58 @@
         }
 
         .msg-action-btn {
-    position: absolute;
-    top: 8px;
-    width: 28px;
-    height: 28px;
-    background: none;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.15em;
-    box-shadow: 0 1px 4px 0 rgba(60,60,60,0.07);
-    color: #888;
-    cursor: pointer;
-    transition: color 0.18s, background 0.18s, transform 0.14s;
-    z-index: 2;
-}
-.msg-action-btn:hover {
-    background: #f1f3f8;
-    color: #222;
-    transform: scale(1.13);
-}
-.delete-btn {
-    right: 8px;
-    color: #e44a4a;
-}
-.delete-btn:hover {
-    background: #ffeaea;
-    color: #b80000;
-}
-.copy-md-btn {
-    right: 44px;
-    color: #4b8cff;
-}
-.copy-md-btn:hover {
-    background: #e9f2ff;
-    color: #0056b3;
-}
-.copy-txt-btn {
-    right: 80px;
-    color: #00b894;
-}
-.copy-txt-btn:hover {
-    background: #eafff3;
-    color: #007a4b;
-}
-
             position: absolute;
             top: 8px;
-            right: 8px;
+            width: 28px;
+            height: 28px;
             background: none;
             border: none;
-            color: #e44a4a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15em;
+            box-shadow: 0 1px 4px 0 rgba(60, 60, 60, 0.07);
+            color: #888;
             cursor: pointer;
-            font-size: 1.2em;
-            transition: color 0.2s;
+            transition: color 0.18s, background 0.18s, transform 0.14s;
+            z-index: 2;
         }
-        #chat-container div .delete-btn:hover {
-            color: #ff2222;
+
+        .msg-action-btn:hover {
+            background: #f1f3f8;
+            color: #222;
+            transform: scale(1.13);
+        }
+
+        .delete-btn {
+            right: 8px;
+            color: #e44a4a;
+        }
+
+        .delete-btn:hover {
+            background: #ffeaea;
+            color: #b80000;
+        }
+
+        .copy-md-btn {
+            right: 44px;
+            color: #4b8cff;
+        }
+
+        .copy-md-btn:hover {
+            background: #e9f2ff;
+            color: #0056b3;
+        }
+
+        .copy-txt-btn {
+            right: 80px;
+            color: #00b894;
+        }
+
+        .copy-txt-btn:hover {
+            background: #eafff3;
+            color: #007a4b;
         }
 
         #chat-container code {
@@ -262,7 +265,11 @@
             display: inline-block;
             padding: 4px 9px;
             border-radius: 6px;
-            font-family: 'JetBrains Mono', 'Consolas', 'Courier New', Courier, monospace;
+            font-family: 'JetBrains Mono',
+                'Consolas',
+                'Courier New',
+                Courier,
+                monospace;
             position: relative;
         }
 
@@ -279,6 +286,7 @@
             padding: 1px 6px;
             transition: background 0.2s;
         }
+
         #chat-container code .copy-button:hover {
             background: #d6e8ff;
         }
@@ -296,6 +304,7 @@
             padding: 1px 6px;
             transition: background 0.2s;
         }
+
         #chat-container code .tab-button:hover {
             background: #d6e8ff;
         }
@@ -308,7 +317,7 @@
             align-items: flex-end;
             gap: 10px;
         }
-                
+
         #upload-image-button {
             margin-bottom: 5px;
             background: linear-gradient(90deg, #e3e8ee 0%, #f5f6fa 100%);
@@ -317,9 +326,10 @@
             padding: 7px 13px;
             font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 1px 4px 0 rgba(40,60,80,0.04);
+            box-shadow: 0 1px 4px 0 rgba(40, 60, 80, 0.04);
             transition: background 0.2s;
         }
+
         #upload-image-button:hover {
             background: #e9f2ff;
         }
@@ -337,6 +347,7 @@
             transition: border 0.2s;
             background: #f7f8fa;
         }
+
         #message-input:focus {
             border: 1.5px solid #4b8cff;
             outline: none;
@@ -354,14 +365,16 @@
             font-weight: 600;
             font-size: 1.1em;
             cursor: pointer;
-            box-shadow: 0 2px 8px 0 rgba(40,60,80,0.09);
+            box-shadow: 0 2px 8px 0 rgba(40, 60, 80, 0.09);
             transition: background 0.2s;
         }
+
         #send-button:hover {
             background: linear-gradient(90deg, #357ae8 0%, #4b8cff 100%);
         }
 
-        #model-select, #image-model-select {
+        #model-select,
+        #image-model-select {
             margin-top: 5px;
             width: 100%;
             box-sizing: border-box;
@@ -372,13 +385,16 @@
             font-size: 1em;
             transition: border 0.2s;
         }
-        #model-select:focus, #image-model-select:focus {
+
+        #model-select:focus,
+        #image-model-select:focus {
             border: 1.5px solid #4b8cff;
             outline: none;
             background: #fff;
         }
 
-        input[type="text"], textarea {
+        input[type="text"],
+        textarea {
             width: 100%;
             margin-bottom: 7px;
             padding: 10px 12px;
@@ -389,13 +405,16 @@
             background: #f7f8fa;
             transition: border 0.2s;
         }
-        input[type="text"]:focus, textarea:focus {
+
+        input[type="text"]:focus,
+        textarea:focus {
             border: 1.5px solid #4b8cff;
             outline: none;
             background: #fff;
         }
 
-        #api-key, #image-api-key {
+        #api-key,
+        #image-api-key {
             width: 60%;
             display: inline-block;
             vertical-align: top;
@@ -420,6 +439,7 @@
         #system-prompt-container {
             margin-bottom: 18px;
         }
+
         #system-prompt-container .accordion-content {
             padding: 14px 16px;
             border: none;
@@ -427,11 +447,13 @@
             display: none;
             width: 100%;
             background: #fff;
-            box-shadow: 0 1px 8px 0 rgba(40,60,80,0.07);
+            box-shadow: 0 1px 8px 0 rgba(40, 60, 80, 0.07);
         }
+
         #system-prompt-container .accordion-content.show {
             display: block;
         }
+
         #system-prompt-container .accordion-button {
             background: linear-gradient(90deg, #e3e8ee 0%, #f5f6fa 100%);
             padding: 9px 16px;
@@ -442,531 +464,725 @@
             text-align: left;
             font-weight: 600;
             font-size: 1.1em;
-            box-shadow: 0 1px 4px 0 rgba(40,60,80,0.04);
+            box-shadow: 0 1px 4px 0 rgba(40, 60, 80, 0.04);
             transition: background 0.2s;
         }
+
         #system-prompt-container .accordion-button:hover {
             background: #e9f2ff;
         }
-
     </style>
 </head>
+
 <body>
     <div id="container">
-    <div id="sidebar">
-        <button id="new-chat-button" onclick="startNewChat()" style="margin-bottom: 10px;">新對話</button>
-        <div id="conversation-list"></div>
-        <div id="settings-container" class="accordion">
-            <button class="accordion-button" onclick="toggleSettingsContainer()">設定</button>
-            <div class="accordion-content">
-                <div id="server-url-container">
-                    <label for="server-url">伺服器網址:</label>
-                    <input type="text" id="server-url" />
-                    <div id="server-url-version-container">
-                        <label for="server-url-version">伺服器網址版本:</label>
-                        <input type="text" id="server-url-version" value="v1" />
+        <div id="sidebar">
+            <button id="new-chat-button" onclick="startNewChat()" style="margin-bottom: 10px;">新對話</button>
+            <div id="conversation-list"></div>
+            <div id="settings-container" class="accordion">
+                <button class="accordion-button" onclick="toggleSettingsContainer()">設定</button>
+                <div class="accordion-content">
+                    <div id="server-url-container">
+                        <label for="server-url">伺服器網址:</label>
+                        <input type="text" id="server-url" />
+                        <div id="server-url-version-container">
+                            <label for="server-url-version">伺服器網址版本:</label>
+                            <input type="text" id="server-url-version" value="v1" />
+                        </div>
                     </div>
+                    <input type="text" id="api-key" placeholder="API 金鑰" />
+                    <select id="model-select" onchange="saveSelectedModel()">
+                        <option value="">選擇模型</option>
+                    </select>
+                    <button id="fetch-models-button" onclick="fetchModels()">取得模型</button>
                 </div>
-                <input type="text" id="api-key" placeholder="API 金鑰" />
-                <select id="model-select" onchange="saveSelectedModel()">
-                    <option value="">選擇模型</option>
-                </select>
-                <button id="fetch-models-button" onclick="fetchModels()">取得模型</button>
             </div>
-        </div>
-        <div id="image-settings-container" class="accordion">
-            <button class="accordion-button" onclick="toggleImageSettingsContainer()">圖片設定</button>
-            <div class="accordion-content">
-                <div id="image-server-url-container">
-                    <label for="image-server-url">圖片伺服器網址:</label>
-                    <input type="text" id="image-server-url" />
-                    <div id="image-server-url-version-container">
-                        <label for="image-server-url-version">圖片伺服器網址版本:</label>
-                        <input type="text" id="image-server-url-version" value="v1" />
+            <div id="image-settings-container" class="accordion">
+                <button class="accordion-button" onclick="toggleImageSettingsContainer()">圖片設定</button>
+                <div class="accordion-content">
+                    <div id="image-server-url-container">
+                        <label for="image-server-url">圖片伺服器網址:</label>
+                        <input type="text" id="image-server-url" />
+                        <div id="image-server-url-version-container">
+                            <label for="image-server-url-version">圖片伺服器網址版本:</label>
+                            <input type="text" id="image-server-url-version" value="v1" />
+                        </div>
                     </div>
+                    <input type="text" id="image-api-key" placeholder="圖片API金鑰" />
+                    <div style="margin-top: 5px; margin-bottom: 5px;">
+                        <label for="image-prompt" style="display:block; margin-bottom:5px;">圖片提示詞:</label>
+                        <input type="text" id="image-prompt" placeholder="What's in this image?"
+                            onblur="saveImagePrompt()" />
+                    </div>
+                    <select id="image-model-select" onchange="saveSelectedImageModel()">
+                        <option value="">選擇圖片模型</option>
+                    </select>
+                    <button id="fetch-image-models-button" onclick="fetchImageModels()">取得圖片模型</button>
                 </div>
-                <input type="text" id="image-api-key" placeholder="圖片API金鑰" />
-                <select id="image-model-select" onchange="saveSelectedImageModel()">
-                    <option value="">選擇圖片模型</option>
-                </select>
-                <button id="fetch-image-models-button" onclick="fetchImageModels()">取得圖片模型</button>
+            </div>
+            <div id="system-prompt-container" class="accordion">
+                <button class="accordion-button" onclick="toggleSystemPromptContainer()">System 提示</button>
+                <div class="accordion-content">
+                    <label for="system-prompt">System 提示:</label>
+                    <textarea id="system-prompt" placeholder="System 提示" rows="4"
+                        oninput="updateSystemPrompt()"></textarea>
+                </div>
             </div>
         </div>
-        <div id="system-prompt-container" class="accordion">
-            <button class="accordion-button" onclick="toggleSystemPromptContainer()">System 提示</button>
-            <div class="accordion-content">
-                <label for="system-prompt">System 提示:</label>
-                <textarea id="system-prompt" placeholder="System 提示" rows="4" oninput="updateSystemPrompt()"></textarea>
+        <div id="main-content">
+            <div id="chat-container"></div>
+            <div id="input-container">
+                <button id="upload-image-button" onclick="document.getElementById('image-upload').click()">上傳圖片</button>
+                <input type="file" id="image-upload" accept="image/*" style="display:none;"
+                    onchange="handleImageUpload(this.files)">
+                <textarea id="message-input" placeholder="輸入訊息..."
+                    onkeydown="if(event.key === 'Enter' && event.ctrlKey) sendMessage()"
+                    onpaste="handlePaste(event)"></textarea>
+                <button id="send-button" onclick="sendMessage()">送出</button>
             </div>
         </div>
-    </div>
-    <div id="main-content">
-        <div id="chat-container"></div>
-        <div id="input-container">
-            <button id="upload-image-button" onclick="document.getElementById('image-upload').click()">上傳圖片</button>
-            <input type="file" id="image-upload" accept="image/*" style="display:none;" onchange="handleImageUpload(this.files)">
-            <textarea id="message-input" placeholder="輸入訊息..." onkeydown="if(event.key === 'Enter' && event.ctrlKey) sendMessage()" onpaste="handlePaste(event)"></textarea>
-            <button id="send-button" onclick="sendMessage()">送出</button>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.0/purify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.0/purify.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 
-    <script>
-        let currentConversationId = null;
-        let chatHistory = [];
-        let isSending = false;
-        // Add at top of script section
-        let messageCounter = 0;
+        <script>
+            let currentConversationId = null;
+            let chatHistory = [];
+            let isSending = false;
+            // Add at top of script section
+            let messageCounter = 0;
 
-        // Initialize Mermaid configuration
-        const ALLOWED_TAGS = [
-            'a',
-            'b',
-            'blockquote',
-            'br',
-            'dd',
-            'div',
-            'dl',
-            'dt',
-            'em',
-            'foreignObject',
-            'h1',
-            'h2',
-            'h3',
-            'h4',
-            'h5',
-            'h6',
-            'h7',
-            'h8',
-            'hr',
-            'i',
-            'li',
-            'ul',
-            'ol',
-            'p',
-            'pre',
-            'span',
-            'strike',
-            'strong',
-            'table',
-            'tbody',
-            'td',
-            'tfoot',
-            'th',
-            'thead',
-            'tr',
-        ];              
-        const mermaidConfig = {
-            startOnLoad: true,
-            securityLevel: 'loose',
-            flowchart: { htmlLabels: false, curve: 'basis' },
-            gantt: { htmlLabels: false},
-            sequence: { htmlLabels: false, actorMargin: 50 },
-        };              
-        mermaid.initialize(mermaidConfig);
-                
-        document.addEventListener('DOMContentLoaded', () => {
-            const serverUrl = localStorage.getItem('serverUrl');
-            const apiKey = localStorage.getItem('apiKey');
-            const selectedModel = localStorage.getItem('selectedModel');
-            const imageServerUrl = localStorage.getItem('imageServerUrl');
-            const imageApiKey = localStorage.getItem('imageApiKey');
-            const selectedImageModel = localStorage.getItem('selectedImageModel');
+            // Initialize Mermaid configuration
+            const ALLOWED_TAGS = [
+                'a',
+                'b',
+                'blockquote',
+                'br',
+                'dd',
+                'div',
+                'dl',
+                'dt',
+                'em',
+                'foreignObject',
+                'h1',
+                'h2',
+                'h3',
+                'h4',
+                'h5',
+                'h6',
+                'h7',
+                'h8',
+                'hr',
+                'i',
+                'li',
+                'ul',
+                'ol',
+                'p',
+                'pre',
+                'span',
+                'strike',
+                'strong',
+                'table',
+                'tbody',
+                'td',
+                'tfoot',
+                'th',
+                'thead',
+                'tr',
+            ];
+            const mermaidConfig = {
+                startOnLoad: true,
+                securityLevel: 'loose',
+                flowchart: { htmlLabels: false, curve: 'basis' },
+                gantt: { htmlLabels: false },
+                sequence: { htmlLabels: false, actorMargin: 50 },
+            };
+            mermaid.initialize(mermaidConfig);
 
-            if (serverUrl) document.getElementById('server-url').value = serverUrl;
-            if (apiKey) document.getElementById('api-key').value = apiKey;
-            if (selectedModel) document.getElementById('model-select').value = selectedModel;
-            if (imageServerUrl) document.getElementById('image-server-url').value = imageServerUrl;
-            if (imageApiKey) document.getElementById('image-api-key').value = imageApiKey;
-            if (selectedImageModel) document.getElementById('image-model-select').value = selectedImageModel;
+            document.addEventListener('DOMContentLoaded', () => {
+                const serverUrl = localStorage.getItem('serverUrl');
+                const apiKey = localStorage.getItem('apiKey');
+                const selectedModel = localStorage.getItem('selectedModel');
+                const imageServerUrl = localStorage.getItem('imageServerUrl');
+                const imageApiKey = localStorage.getItem('imageApiKey');
+                const selectedImageModel = localStorage.getItem('selectedImageModel');
 
-            loadConversationList();
+                if (serverUrl) document.getElementById('server-url').value = serverUrl;
+                if (apiKey) document.getElementById('api-key').value = apiKey;
+                if (selectedModel) document.getElementById('model-select').value = selectedModel;
+                if (imageServerUrl) document.getElementById('image-server-url').value = imageServerUrl;
+                if (imageApiKey) document.getElementById('image-api-key').value = imageApiKey;
+                if (selectedImageModel) document.getElementById('image-model-select').value = selectedImageModel;
+                const savedImagePrompt = localStorage.getItem('imagePrompt');
+                if (savedImagePrompt) document.getElementById('image-prompt').value = savedImagePrompt;
 
-            const savedModels = localStorage.getItem('models');
-            if (savedModels) {
-                populateModelSelect(JSON.parse(savedModels));
+                loadConversationList();
+
+                const savedModels = localStorage.getItem('models');
+                if (savedModels) {
+                    populateModelSelect(JSON.parse(savedModels));
+                }
+
+                const savedImageModels = localStorage.getItem('imageModels');
+                if (savedImageModels) {
+                    populateImageModelSelect(JSON.parse(savedImageModels));
+                }
+
+                const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
+                const conversationIds = Object.keys(conversationList);
+
+                if (conversationIds.length > 0) {
+                    currentConversationId = conversationIds[conversationIds.length - 1];
+                    chatHistory = JSON.parse(localStorage.getItem(`conversation-${currentConversationId}`)) || [];
+                    const systemPrompt = chatHistory.find(([sender]) => sender === 'system')?.[1] || '';
+                    document.getElementById('system-prompt').value = systemPrompt;
+                    chatHistory.forEach(([sender, message]) => {
+                        if (sender === 'system') {
+                            messageCounter += 1;
+                        }
+                        if (sender !== 'system') {
+                            appendMessage(sender, message);
+                        }
+                    });
+                    markActiveConversation(currentConversationId);
+                } else {
+                    startNewChat();
+                }
+            });
+
+            async function startNewChat() {
+                if (isSending) return;
+
+                currentConversationId = new Date().toISOString();
+                chatHistory = [];
+                messageCounter = 0; // Reset counter for new chat
+
+                const systemPrompt = "";
+                if (systemPrompt) {
+                    chatHistory.push(['system', systemPrompt]);
+                }
+
+                const chatContainer = document.getElementById('chat-container');
+                chatContainer.innerHTML = '';
+
+                saveConversation();
+
+                addConversationToList(currentConversationId);
+                markActiveConversation(currentConversationId);
+                loadConversationList();
+                loadConversation(currentConversationId);
             }
 
-            const savedImageModels = localStorage.getItem('imageModels');
-            if (savedImageModels) {
-                populateImageModelSelect(JSON.parse(savedImageModels));
+            async function loadConversationList() {
+                const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
+                const conversationListDiv = document.getElementById('conversation-list');
+                conversationListDiv.innerHTML = '';
+
+                const conversationIds = Object.keys(conversationList).sort((a, b) => new Date(b) - new Date(a));
+
+                conversationIds.forEach(conversationId => {
+                    const chatHistory = JSON.parse(localStorage.getItem(`conversation-${conversationId}`)) || [];
+                    const firstMessage = chatHistory.length > 0 ? chatHistory[0][1].substring(0, 14) : '';
+                    const conversationItem = document.createElement('div');
+                    const title = conversationList[conversationId] || conversationId;
+                    conversationItem.innerHTML = `
+            <input type="text" value="${title}" onblur="updateConversationTitle(this, '${conversationId}')">
+            <span>${firstMessage}</span>
+            <button class="msg-action-btn delete-btn" onclick="confirmDeleteConversation('${conversationId}')">X</button>
+        `;
+                    conversationItem.onclick = () => loadConversation(conversationId);
+                    conversationListDiv.appendChild(conversationItem);
+                });
             }
 
-            const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
-            const conversationIds = Object.keys(conversationList);
+            function updateConversationTitle(input, conversationId) {
+                const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
+                conversationList[conversationId] = input.value;
+                localStorage.setItem('conversationList', JSON.stringify(conversationList));
+            }
 
-            if (conversationIds.length > 0) {
-                currentConversationId = conversationIds[conversationIds.length - 1];
-                chatHistory = JSON.parse(localStorage.getItem(`conversation-${currentConversationId}`)) || [];
+            function addConversationToList(conversationId) {
+                const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
+                conversationList[conversationId] = conversationId;
+                localStorage.setItem('conversationList', JSON.stringify(conversationList));
+
+                const conversationListDiv = document.getElementById('conversation-list');
+                const conversationItem = document.createElement('div');
+                conversationItem.innerHTML = `<input type="text" value="${conversationId}" onblur="updateConversationTitle(this, '${conversationId}')"><span></span><button class="msg-action-btn delete-btn" onclick="confirmDeleteConversation('${conversationId}')">X</button>`;
+                conversationItem.onclick = () => loadConversation(conversationId);
+                conversationListDiv.prepend(conversationItem);
+            }
+
+            function loadConversation(conversationId) {
+                if (isSending) return;
+
+                currentConversationId = conversationId;
+                chatHistory = JSON.parse(localStorage.getItem(`conversation-${conversationId}`)) || [];
+                messageCounter = 0; // Reset counter when loading new conversation
+
+                const chatContainer = document.getElementById('chat-container');
+                chatContainer.innerHTML = '';
+
                 const systemPrompt = chatHistory.find(([sender]) => sender === 'system')?.[1] || '';
                 document.getElementById('system-prompt').value = systemPrompt;
+
                 chatHistory.forEach(([sender, message]) => {
-                    if(sender === 'system') {
+                    if (sender === 'system') {
                         messageCounter += 1;
                     }
                     if (sender !== 'system') {
                         appendMessage(sender, message);
                     }
                 });
-                markActiveConversation(currentConversationId);
-            } else {
-                startNewChat();
-            }
-        });
-
-        async function startNewChat() {
-            if (isSending) return;
-
-            currentConversationId = new Date().toISOString();
-            chatHistory = [];
-            messageCounter = 0; // Reset counter for new chat
-
-            const systemPrompt = "";
-            if (systemPrompt) {
-                chatHistory.push(['system', systemPrompt]);
+                markActiveConversation(conversationId);
             }
 
-            const chatContainer = document.getElementById('chat-container');
-            chatContainer.innerHTML = '';
-			
-            saveConversation();
+            async function fetchModels() {
+                if (isSending) return;
 
-            addConversationToList(currentConversationId);
-            markActiveConversation(currentConversationId);
-            loadConversationList();
-			loadConversation(currentConversationId);			
-        }
+                let serverUrl = document.getElementById('server-url').value.trim();
+                const serverUrlVersion = document.getElementById('server-url-version').value.trim();
+                const apiKey = document.getElementById('api-key').value.trim();
 
-        async function loadConversationList() {
-            const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
-            const conversationListDiv = document.getElementById('conversation-list');
-            conversationListDiv.innerHTML = '';
-
-            const conversationIds = Object.keys(conversationList).sort((a, b) => new Date(b) - new Date(a));
-
-            conversationIds.forEach(conversationId => {
-                const chatHistory = JSON.parse(localStorage.getItem(`conversation-${conversationId}`)) || [];
-                const firstMessage = chatHistory.length > 0 ? chatHistory[0][1].substring(0, 14) : '';
-                const conversationItem = document.createElement('div');
-                const title = conversationList[conversationId] || conversationId;
-                conversationItem.innerHTML = `
-            <input type="text" value="${title}" onblur="updateConversationTitle(this, '${conversationId}')">
-            <span>${firstMessage}</span>
-            <button class="msg-action-btn delete-btn" onclick="confirmDeleteConversation('${conversationId}')">X</button>
-        `;
-                conversationItem.onclick = () => loadConversation(conversationId);
-                conversationListDiv.appendChild(conversationItem);
-            });
-        }
-
-        function updateConversationTitle(input, conversationId) {
-            const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
-            conversationList[conversationId] = input.value;
-            localStorage.setItem('conversationList', JSON.stringify(conversationList));
-        }
-
-        function addConversationToList(conversationId) {
-            const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
-            conversationList[conversationId] = conversationId;
-            localStorage.setItem('conversationList', JSON.stringify(conversationList));
-
-            const conversationListDiv = document.getElementById('conversation-list');
-            const conversationItem = document.createElement('div');
-            conversationItem.innerHTML = `<input type="text" value="${conversationId}" onblur="updateConversationTitle(this, '${conversationId}')"><span></span><button class="msg-action-btn delete-btn" onclick="confirmDeleteConversation('${conversationId}')">X</button>`;
-            conversationItem.onclick = () => loadConversation(conversationId);
-            conversationListDiv.prepend(conversationItem);
-        }
-
-        function loadConversation(conversationId) {
-            if (isSending) return;
-
-            currentConversationId = conversationId;
-            chatHistory = JSON.parse(localStorage.getItem(`conversation-${conversationId}`)) || [];
-            messageCounter = 0; // Reset counter when loading new conversation
-
-            const chatContainer = document.getElementById('chat-container');
-            chatContainer.innerHTML = '';
-
-            const systemPrompt = chatHistory.find(([sender]) => sender === 'system')?.[1] || '';
-            document.getElementById('system-prompt').value = systemPrompt;
-
-            chatHistory.forEach(([sender, message]) => {
-                if(sender === 'system') {
-                    messageCounter += 1;
+                if (!serverUrl || !serverUrlVersion || !apiKey) {
+                    alert('請填寫伺服器網址、版本和API金鑰。');
+                    return;
                 }
-                if (sender !== 'system') {
-                    appendMessage(sender, message);
-                }
-            });
-            markActiveConversation(conversationId);
-        }
 
-        async function fetchModels() {
-            if (isSending) return;
+                const requestUrl = `${serverUrl}/${serverUrlVersion}`;
 
-            let serverUrl = document.getElementById('server-url').value.trim();
-            const serverUrlVersion = document.getElementById('server-url-version').value.trim();
-            const apiKey = document.getElementById('api-key').value.trim();
-
-            if (!serverUrl || !serverUrlVersion || !apiKey) {
-                alert('請填寫伺服器網址、版本和API金鑰。');
-                return;
-            }
-
-            const requestUrl = `${serverUrl}/${serverUrlVersion}`;
-
-            try {
-                const response = await fetch(`${requestUrl}/models`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'ngrok-skip-browser-warning': 'true'
+                try {
+                    const response = await fetch(`${requestUrl}/models`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${apiKey}`,
+                            'ngrok-skip-browser-warning': 'true'
+                        }
+                    });
+                    if (!response.ok) {
+                        const errorMessage = await response.text();
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
                     }
-                });
-                if (!response.ok) {
-                    const errorMessage = await response.text();
-                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+                    const data = await response.json();
+                    console.log('取得模型的回應內容:', data);
+                    populateModelSelect(data.data);
+                    localStorage.setItem('models', JSON.stringify(data.data));
+                    localStorage.setItem('serverUrl', serverUrl);
+                    localStorage.setItem('apiKey', apiKey);
+                } catch (error) {
+                    console.error('無法取得模型列表:', error);
+                    // alert(`無法取得模型列表，請檢查伺服器網址 (${serverUrl}) 和API金鑰 (${apiKey})。\n錯誤訊息: ${error.message}`);
+                    const data = {
+                        data: [
+                            { id: 'default' }
+                        ]
+                    };
+                    populateModelSelect(data.data);
+                    localStorage.setItem('models', JSON.stringify(data.data));
+                    localStorage.setItem('serverUrl', serverUrl);
+                    localStorage.setItem('apiKey', apiKey);
                 }
-                const data = await response.json();
-                console.log('取得模型的回應內容:', data);
-                populateModelSelect(data.data);
-                localStorage.setItem('models', JSON.stringify(data.data));
-                localStorage.setItem('serverUrl', serverUrl);
-                localStorage.setItem('apiKey', apiKey);
-            } catch (error) {
-                console.error('無法取得模型列表:', error);
-                // alert(`無法取得模型列表，請檢查伺服器網址 (${serverUrl}) 和API金鑰 (${apiKey})。\n錯誤訊息: ${error.message}`);
-                const data = {
-                    data: [
-                        { id: 'default' }
-                    ]
-                };
-                populateModelSelect(data.data);
-                localStorage.setItem('models', JSON.stringify(data.data));
-                localStorage.setItem('serverUrl', serverUrl);
-                localStorage.setItem('apiKey', apiKey);
-            }
-        }
-
-        function populateModelSelect(models) {
-            const modelSelect = document.getElementById('model-select');
-            modelSelect.innerHTML = '<option value="">選擇模型</option>';
-            models.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model.id;
-                option.textContent = model.id;
-                modelSelect.appendChild(option);
-            });
-
-            const selectedModel = localStorage.getItem('selectedModel');
-            if (selectedModel) {
-                modelSelect.value = selectedModel;
-            }
-        }
-
-        function saveSelectedModel() {
-            const modelSelect = document.getElementById('model-select');
-            const selectedModel = modelSelect.value;
-            localStorage.setItem('selectedModel', selectedModel);
-        }
-
-        async function fetchImageModels() {
-            if (isSending) return;
-
-            let serverUrl = document.getElementById('image-server-url').value.trim();
-            const apiKey = document.getElementById('image-api-key').value.trim();
-            const serverUrlVersion = document.getElementById('image-server-url-version').value.trim();
-
-            if (!serverUrl || !serverUrlVersion || !apiKey) {
-                alert('請填寫所有必要的圖片欄位。');
-                return;
             }
 
-            const requestUrl = `${serverUrl}/${serverUrlVersion}`;
+            function populateModelSelect(models) {
+                const modelSelect = document.getElementById('model-select');
+                modelSelect.innerHTML = '<option value="">選擇模型</option>';
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model.id;
+                    option.textContent = model.id;
+                    modelSelect.appendChild(option);
+                });
 
-            try {
-                const response = await fetch(`${requestUrl}/models`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'ngrok-skip-browser-warning': 'true'
+                const selectedModel = localStorage.getItem('selectedModel');
+                if (selectedModel) {
+                    modelSelect.value = selectedModel;
+                }
+            }
+
+            function saveSelectedModel() {
+                const modelSelect = document.getElementById('model-select');
+                const selectedModel = modelSelect.value;
+                localStorage.setItem('selectedModel', selectedModel);
+            }
+
+            async function fetchImageModels() {
+                if (isSending) return;
+
+                let serverUrl = document.getElementById('image-server-url').value.trim();
+                const apiKey = document.getElementById('image-api-key').value.trim();
+                const serverUrlVersion = document.getElementById('image-server-url-version').value.trim();
+
+                if (!serverUrl || !serverUrlVersion || !apiKey) {
+                    alert('請填寫所有必要的圖片欄位。');
+                    return;
+                }
+
+                const requestUrl = `${serverUrl}/${serverUrlVersion}`;
+
+                try {
+                    const response = await fetch(`${requestUrl}/models`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${apiKey}`,
+                            'ngrok-skip-browser-warning': 'true'
+                        }
+                    });
+                    if (!response.ok) {
+                        const errorMessage = await response.text();
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
                     }
-                });
-                if (!response.ok) {
-                    const errorMessage = await response.text();
-                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+                    const data = await response.json();
+                    console.log('取得圖片模型的回應內容:', data);
+                    populateImageModelSelect(data.data);
+                    localStorage.setItem('imageModels', JSON.stringify(data.data));
+                    localStorage.setItem('imageServerUrl', serverUrl);
+                    localStorage.setItem('imageApiKey', apiKey);
+                } catch (error) {
+                    console.error('無法取得圖片模型列表:', error);
+                    alert(`無法取得圖片模型列表，請檢查伺服器網址 (${serverUrl}) 和API金鑰 (${apiKey})。\n錯誤訊息: ${error.message}`);
                 }
-                const data = await response.json();
-                console.log('取得圖片模型的回應內容:', data);
-                populateImageModelSelect(data.data);
-                localStorage.setItem('imageModels', JSON.stringify(data.data));
-                localStorage.setItem('imageServerUrl', serverUrl);
-                localStorage.setItem('imageApiKey', apiKey);
-            } catch (error) {
-                console.error('無法取得圖片模型列表:', error);
-                alert(`無法取得圖片模型列表，請檢查伺服器網址 (${serverUrl}) 和API金鑰 (${apiKey})。\n錯誤訊息: ${error.message}`);
-            }
-        }
-
-        function populateImageModelSelect(models) {
-            const modelSelect = document.getElementById('image-model-select');
-            modelSelect.innerHTML = '<option value="">選擇圖片模型</option>';
-            models.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model.id;
-                option.textContent = model.id;
-                modelSelect.appendChild(option);
-            });
-
-            const selectedModel = localStorage.getItem('selectedImageModel');
-            if (selectedModel) {
-                modelSelect.value = selectedModel;
-            }
-        }
-
-        function saveSelectedImageModel() {
-            const modelSelect = document.getElementById('image-model-select');
-            const selectedModel = modelSelect.value;
-            localStorage.setItem('selectedImageModel', selectedModel);
-        }
-
-        async function sendMessage() {
-            if (isSending) return;
-
-            let serverUrl = document.getElementById('server-url').value.trim();
-            const apiKey = document.getElementById('api-key').value.trim();
-            const modelId = document.getElementById('model-select').value;
-            const messageInput = document.getElementById('message-input');
-            const userMessage = messageInput.value.trim();
-            const serverUrlVersion = document.getElementById('server-url-version').value.trim();
-
-            if (!userMessage || !serverUrl || !apiKey || !modelId) {
-                alert('請填寫所有必要的欄位。');
-                return;
             }
 
-            const requestUrl = `${serverUrl}/${serverUrlVersion}`;
-
-            // refresh 
-            loadConversation(currentConversationId); 
-            appendMessage('user', userMessage);
-            chatHistory.push(['user', userMessage]);
-            saveConversation();
-            loadConversationList();
-                        
-            messageInput.value = '';
-            isSending = true;
-            disableUI();
-
-            try {
-                console.log('Sending message to:', requestUrl);
-                console.log('Message payload:', {
-                    model: modelId,
-                    messages: chatHistory.map(([role, content]) => ({ role, content })),
-                    stream: true
+            function populateImageModelSelect(models) {
+                const modelSelect = document.getElementById('image-model-select');
+                modelSelect.innerHTML = '<option value="">選擇圖片模型</option>';
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model.id;
+                    option.textContent = model.id;
+                    modelSelect.appendChild(option);
                 });
 
-                const response = await fetch(`${requestUrl}/chat/completions`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json',
-                        'ngrok-skip-browser-warning': 'true'
-                    },
-                    body: JSON.stringify({
+                const selectedModel = localStorage.getItem('selectedImageModel');
+                if (selectedModel) {
+                    modelSelect.value = selectedModel;
+                }
+            }
+
+            function saveSelectedImageModel() {
+                const modelSelect = document.getElementById('image-model-select');
+                const selectedModel = modelSelect.value;
+                localStorage.setItem('selectedImageModel', selectedModel);
+            }
+
+            function saveImagePrompt() {
+                const prompt = document.getElementById('image-prompt').value;
+                localStorage.setItem('imagePrompt', prompt);
+            }
+            async function sendMessage() {
+                if (isSending) return;
+
+                let serverUrl = document.getElementById('server-url').value.trim();
+                const apiKey = document.getElementById('api-key').value.trim();
+                const modelId = document.getElementById('model-select').value;
+                const messageInput = document.getElementById('message-input');
+                const userMessage = messageInput.value.trim();
+                const serverUrlVersion = document.getElementById('server-url-version').value.trim();
+
+                if (!userMessage || !serverUrl || !apiKey || !modelId) {
+                    alert('請填寫所有必要的欄位。');
+                    return;
+                }
+
+                const requestUrl = `${serverUrl}/${serverUrlVersion}`;
+
+                // refresh 
+                loadConversation(currentConversationId);
+                appendMessage('user', userMessage);
+                chatHistory.push(['user', userMessage]);
+                saveConversation();
+                loadConversationList();
+
+                messageInput.value = '';
+                isSending = true;
+                disableUI();
+
+                try {
+                    console.log('Sending message to:', requestUrl);
+                    console.log('Message payload:', {
                         model: modelId,
                         messages: chatHistory.map(([role, content]) => ({ role, content })),
                         stream: true
-                    })
-                });
+                    });
 
-                if (!response.ok) {
-                    const errorMessage = await response.text();
-                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
-                }
+                    const response = await fetch(`${requestUrl}/chat/completions`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${apiKey}`,
+                            'Content-Type': 'application/json',
+                            'ngrok-skip-browser-warning': 'true'
+                        },
+                        body: JSON.stringify({
+                            model: modelId,
+                            messages: chatHistory.map(([role, content]) => ({ role, content })),
+                            stream: true
+                        })
+                    });
 
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder('utf-8');
-                let partialLine = '';
-                let assistantMessage = '';
-                let assistantMessageElement = null;
-				
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
+                    if (!response.ok) {
+                        const errorMessage = await response.text();
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+                    }
 
-                    const chunk = decoder.decode(value, { stream: true });
-                    const lines = (partialLine + chunk).split('\n');
-                    partialLine = lines.pop();
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder('utf-8');
+                    let partialLine = '';
+                    let assistantMessage = '';
+                    let assistantMessageElement = null;
 
-                    for (const line of lines) {
-                        if (line.startsWith('data: ')) {
-                            const data = line.substring(6);
-                            if (data === '[DONE]') {
-                                break;
-                            }
-                            const parsedData = JSON.parse(data);
-                            const deltaContent = parsedData.choices[0].delta.content;
-                            if (deltaContent) {
-                                assistantMessage += deltaContent;
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
 
-                                if (!assistantMessageElement) {
-                                    assistantMessageElement = await appendMessage('assistant', '');
-                                    chatHistory.push(['assistant', '']);
+                        const chunk = decoder.decode(value, { stream: true });
+                        const lines = (partialLine + chunk).split('\n');
+                        partialLine = lines.pop();
+
+                        for (const line of lines) {
+                            if (line.startsWith('data: ')) {
+                                const data = line.substring(6);
+                                if (data === '[DONE]') {
+                                    break;
+                                }
+                                const parsedData = JSON.parse(data);
+                                const deltaContent = parsedData.choices[0].delta.content;
+                                if (deltaContent) {
+                                    assistantMessage += deltaContent;
+
+                                    if (!assistantMessageElement) {
+                                        assistantMessageElement = await appendMessage('assistant', '');
+                                        chatHistory.push(['assistant', '']);
+                                        saveConversation();
+                                    }
+
+                                    assistantMessageElement.innerHTML = `<strong>assistant:</strong> ${marked.parse(assistantMessage)}<button class="msg-action-btn delete-btn" onclick="confirmDeleteMessage(${chatHistory.length - 1})">X</button><button class="msg-action-btn copy-md-btn" title="複製Markdown" onclick="copyMarkdown(${chatHistory.length - 1})">MD</button><button class="msg-action-btn copy-txt-btn" title="複製純文字" onclick="copyPlainText(${chatHistory.length - 1})">TXT</button>`;
+
+                                    const codeElements = assistantMessageElement.querySelectorAll('code');
+                                    codeElements.forEach(codeElement => {
+                                        const copyButton = document.createElement('button');
+                                        copyButton.className = 'copy-button';
+                                        copyButton.textContent = '⎘';
+                                        copyButton.onclick = () => copyCode(codeElement);
+                                        codeElement.appendChild(copyButton);
+
+                                        if (codeElement.classList.contains('language-mermaid')) {
+                                            const tabButton = document.createElement('button');
+                                            tabButton.className = 'tab-button';
+                                            tabButton.textContent = '↹';
+                                            tabButton.onclick = () => toggleMermaidToSVG(codeElement);
+                                            codeElement.appendChild(tabButton);
+                                        }
+                                    });
+
+                                    chatHistory[chatHistory.length - 1][1] = assistantMessage;
                                     saveConversation();
                                 }
-
-                                assistantMessageElement.innerHTML = `<strong>assistant:</strong> ${marked.parse(assistantMessage)}<button class="msg-action-btn delete-btn" onclick="confirmDeleteMessage(${chatHistory.length - 1})">X</button><button class="msg-action-btn copy-md-btn" title="複製Markdown" onclick="copyMarkdown(${chatHistory.length - 1})">MD</button><button class="msg-action-btn copy-txt-btn" title="複製純文字" onclick="copyPlainText(${chatHistory.length - 1})">TXT</button>`;
-
-                                const codeElements = assistantMessageElement.querySelectorAll('code');
-                                codeElements.forEach(codeElement => {
-                                    const copyButton = document.createElement('button');
-                                    copyButton.className = 'copy-button';
-                                    copyButton.textContent = '⎘';
-                                    copyButton.onclick = () => copyCode(codeElement);
-                                    codeElement.appendChild(copyButton);
-
-                                    if (codeElement.classList.contains('language-mermaid')) {
-                                        const tabButton = document.createElement('button');
-                                        tabButton.className = 'tab-button';
-                                        tabButton.textContent = '↹';
-                                        tabButton.onclick = () => toggleMermaidToSVG(codeElement);
-                                        codeElement.appendChild(tabButton);
-                                    }
-                                });
-
-                                chatHistory[chatHistory.length - 1][1] = assistantMessage;
-                                saveConversation();
                             }
                         }
                     }
+                } catch (error) {
+                    console.error('通訊錯誤:', error);
+                    alert(`通訊錯誤，請檢查伺服器網址 (${serverUrl}) 和API金鑰 (${apiKey})。\n錯誤訊息: ${error.message}`);
+                } finally {
+                    isSending = false;
+                    enableUI();
                 }
-            } catch (error) {
-                console.error('通訊錯誤:', error);
-                alert(`通訊錯誤，請檢查伺服器網址 (${serverUrl}) 和API金鑰 (${apiKey})。\n錯誤訊息: ${error.message}`);
-            } finally {
-                isSending = false;
-                enableUI();
             }
-        }
 
-        async function handleImageUpload(files) {
-            if (files.length === 0) return;
+            async function handleImageUpload(files) {
+                if (files.length === 0) return;
 
-            const file = files[0];
-            const reader = new FileReader();
+                const file = files[0];
+                const reader = new FileReader();
 
-            reader.onloadend = async () => {
-                const base64Image = reader.result.split(',')[1];
+                reader.onloadend = async () => {
+                    const base64Image = reader.result.split(',')[1];
 
+                    let serverUrl = document.getElementById('image-server-url').value.trim();
+                    const apiKey = document.getElementById('image-api-key').value.trim();
+                    const modelId = document.getElementById('image-model-select').value;
+                    const serverUrlVersion = document.getElementById('image-server-url-version').value.trim();
+                    if (!serverUrl || !apiKey || !modelId) {
+                        alert('請填寫所有必要的圖片欄位。');
+                        return;
+                    }
+
+                    const requestUrl = `${serverUrl}/${serverUrlVersion}`;
+
+                    const payload = {
+                        messages: [
+                            {
+                                "role": "user",
+                                "content": [
+                                    { "type": "text", "text": document.getElementById('image-prompt').value || "What's in this image?" },
+                                    {
+                                        "type": "image_url",
+                                        "image_url": {
+                                            "url": `data:image/jpeg;base64,${base64Image}`,
+                                        },
+                                    },
+                                ],
+                            }
+                        ],
+                        model: modelId
+                    };
+
+                    isSending = true;
+                    disableUI();
+
+                    try {
+                        console.log('Sending image to:', requestUrl);
+                        console.log('Image payload:', payload);
+
+                        const response = await fetch(`${requestUrl}/chat/completions`, {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${apiKey}`,
+                                'Content-Type': 'application/json',
+                                'ngrok-skip-browser-warning': 'true'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            const errorMessage = await response.text();
+                            throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
+                        }
+
+                        const data = await response.json();
+                        console.log('Image response:', data);
+
+                        const assistantMessage = data.choices[0].message.content;
+                        appendMessage('assistant', assistantMessage);
+                        chatHistory.push(['assistant', assistantMessage]);
+                        saveConversation();
+                    } catch (error) {
+                        console.error('通訊錯誤:', error);
+                        alert(`通訊錯誤，請檢查伺服器網址 (${serverUrl}) 和API金鑰 (${apiKey})。\n錯誤訊息: ${error.message}`);
+                    } finally {
+                        isSending = false;
+                        enableUI();
+                    }
+                };
+
+                reader.readAsDataURL(file);
+            }
+
+            async function appendMessage(sender, message) {
+                const chatContainer = document.getElementById('chat-container');
+                const messageElement = document.createElement('div');
+                const currentIndex = messageCounter;
+                if (sender === 'user') {
+                    const cleanMessage = DOMPurify.sanitize(message);
+                    messageElement.innerHTML = `<button class="msg-action-btn delete-btn" onclick="confirmDeleteMessage(${currentIndex})">X</button><button class="msg-action-btn copy-md-btn" title="複製Markdown" onclick="copyMarkdown(${currentIndex})">MD</button><button class="msg-action-btn copy-txt-btn" title="複製純文字" onclick="copyPlainText(${currentIndex})">TXT</button><span></span>`;
+                    messageElement.querySelector('span').innerText = message;
+                } else if (sender === 'assistant') {
+                    messageElement.innerHTML = `<strong>${sender}:</strong> ${marked.parse(message)}<button class="msg-action-btn delete-btn" onclick="confirmDeleteMessage(${currentIndex})">X</button><button class="msg-action-btn copy-md-btn" title="複製Markdown" onclick="copyMarkdown(${currentIndex})">MD</button><button class="msg-action-btn copy-txt-btn" title="複製純文字" onclick="copyPlainText(${currentIndex})">TXT</button>`;
+                }
+                const codeElements = messageElement.querySelectorAll('code');
+                codeElements.forEach(codeElement => {
+                    const copyButton = document.createElement('button');
+                    copyButton.className = 'copy-button';
+                    copyButton.textContent = '⎘';
+                    copyButton.onclick = () => copyCode(codeElement);
+                    codeElement.appendChild(copyButton);
+                    if (codeElement.classList.contains('language-mermaid')) {
+                        const tabButton = document.createElement('button');
+                        tabButton.className = 'tab-button';
+                        tabButton.textContent = '↹';
+                        tabButton.onclick = () => toggleMermaidToSVG(codeElement);
+                        codeElement.appendChild(tabButton);
+                    }
+                });
+                chatContainer.appendChild(messageElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                messageCounter++; // Increment counter after adding message
+                return messageElement;
+            }
+
+            function copyCode(codeElement) {
+                const textToCopy = codeElement.textContent.replace(/⎘|↹/g, '');
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        alert('已複製到剪貼簿！');
+                    })
+                    .catch(err => {
+                        console.error('複製失敗:', err);
+                        alert('複製失敗，請手動複製。');
+                    });
+            }
+
+            function saveConversation() {
+                if (currentConversationId) {
+                    localStorage.setItem(`conversation-${currentConversationId}`, JSON.stringify(chatHistory));
+                }
+            }
+
+            function disableUI() {
+                const messageInput = document.getElementById('message-input');
+                const sendButton = document.getElementById('send-button');
+                const newChatButton = document.getElementById('new-chat-button');
+                const modelSelect = document.getElementById('model-select');
+                const fetchModelsButton = document.getElementById('fetch-models-button');
+                const imageUploadButton = document.getElementById('upload-image-button');
+                const imageModelSelect = document.getElementById('image-model-select');
+                const fetchImageModelsButton = document.getElementById('fetch-image-models-button');
+
+                if (messageInput) messageInput.disabled = true;
+                if (sendButton) sendButton.disabled = true;
+                if (newChatButton) newChatButton.disabled = true;
+                if (modelSelect) modelSelect.disabled = true;
+                if (fetchModelsButton) fetchModelsButton.disabled = true;
+                if (imageUploadButton) imageUploadButton.disabled = true;
+                if (imageModelSelect) imageModelSelect.disabled = true;
+                if (fetchImageModelsButton) fetchImageModelsButton.disabled = true;
+            }
+
+            function enableUI() {
+                const messageInput = document.getElementById('message-input');
+                const sendButton = document.getElementById('send-button');
+                const newChatButton = document.getElementById('new-chat-button');
+                const modelSelect = document.getElementById('model-select');
+                const fetchModelsButton = document.getElementById('fetch-models-button');
+                const imageUploadButton = document.getElementById('upload-image-button');
+                const imageModelSelect = document.getElementById('image-model-select');
+                const fetchImageModelsButton = document.getElementById('fetch-image-models-button');
+
+                if (messageInput) messageInput.disabled = false;
+                if (sendButton) sendButton.disabled = false;
+                if (newChatButton) newChatButton.disabled = false;
+                if (modelSelect) modelSelect.disabled = false;
+                if (fetchModelsButton) fetchModelsButton.disabled = false;
+                if (imageUploadButton) imageUploadButton.disabled = false;
+                if (imageModelSelect) imageModelSelect.disabled = false;
+                if (fetchImageModelsButton) fetchImageModelsButton.disabled = false;
+            }
+
+            function handlePaste(event) {
+                const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    if (item.type.indexOf('image') !== -1) {
+                        const blob = item.getAsFile();
+                        const reader = new FileReader();
+                        reader.onloadend = async () => {
+                            const base64Image = reader.result.split(',')[1];
+                            handlePastedImage(base64Image);
+                        };
+                        reader.readAsDataURL(blob);
+                        event.preventDefault();
+                    }
+                }
+            }
+
+            async function handlePastedImage(base64Image) {
                 let serverUrl = document.getElementById('image-server-url').value.trim();
                 const apiKey = document.getElementById('image-api-key').value.trim();
                 const modelId = document.getElementById('image-model-select').value;
                 const serverUrlVersion = document.getElementById('image-server-url-version').value.trim();
-                if (!serverUrl || !apiKey || !modelId) {
+                if (!serverUrl || !serverUrlVersion || !apiKey || !modelId) {
                     alert('請填寫所有必要的圖片欄位。');
                     return;
                 }
@@ -978,7 +1194,7 @@
                         {
                             "role": "user",
                             "content": [
-                                {"type": "text", "text": "What's in this image?"},
+                                { "type": "text", "text": document.getElementById('image-prompt').value || "What's in this image?" },
                                 {
                                     "type": "image_url",
                                     "image_url": {
@@ -1003,7 +1219,7 @@
                         headers: {
                             'Authorization': `Bearer ${apiKey}`,
                             'Content-Type': 'application/json',
-                        'ngrok-skip-browser-warning': 'true'
+                            'ngrok-skip-browser-warning': 'true'
                         },
                         body: JSON.stringify(payload)
                     });
@@ -1027,392 +1243,215 @@
                     isSending = false;
                     enableUI();
                 }
-            };
-
-            reader.readAsDataURL(file);
-        }
-
-        async function appendMessage(sender, message) {
-            const chatContainer = document.getElementById('chat-container');
-            const messageElement = document.createElement('div');
-            const currentIndex = messageCounter;
-            if (sender === 'user') {
-                const cleanMessage = DOMPurify.sanitize(message);
-                messageElement.innerHTML = `<button class="msg-action-btn delete-btn" onclick="confirmDeleteMessage(${currentIndex})">X</button><button class="msg-action-btn copy-md-btn" title="複製Markdown" onclick="copyMarkdown(${currentIndex})">MD</button><button class="msg-action-btn copy-txt-btn" title="複製純文字" onclick="copyPlainText(${currentIndex})">TXT</button><span></span>`;
-                messageElement.querySelector('span').innerText = message;
-            } else if (sender === 'assistant') {
-                messageElement.innerHTML = `<strong>${sender}:</strong> ${marked.parse(message)}<button class="msg-action-btn delete-btn" onclick="confirmDeleteMessage(${currentIndex})">X</button><button class="msg-action-btn copy-md-btn" title="複製Markdown" onclick="copyMarkdown(${currentIndex})">MD</button><button class="msg-action-btn copy-txt-btn" title="複製純文字" onclick="copyPlainText(${currentIndex})">TXT</button>`;
-            }
-            const codeElements = messageElement.querySelectorAll('code');
-            codeElements.forEach(codeElement => {
-                const copyButton = document.createElement('button');
-                copyButton.className = 'copy-button';
-                copyButton.textContent = '⎘';
-                copyButton.onclick = () => copyCode(codeElement);
-                codeElement.appendChild(copyButton);
-                if (codeElement.classList.contains('language-mermaid')) {
-                    const tabButton = document.createElement('button');
-                    tabButton.className = 'tab-button';
-                    tabButton.textContent = '↹';
-                    tabButton.onclick = () => toggleMermaidToSVG(codeElement);
-                    codeElement.appendChild(tabButton);
-                }
-            });
-            chatContainer.appendChild(messageElement);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-            messageCounter++; // Increment counter after adding message
-            return messageElement;
-        }
-
-        function copyCode(codeElement) {
-            const textToCopy = codeElement.textContent.replace(/⎘|↹/g, '');
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => {
-                    alert('已複製到剪貼簿！');
-                })
-                .catch(err => {
-                    console.error('複製失敗:', err);
-                    alert('複製失敗，請手動複製。');
-                });
-        }
-
-        function saveConversation() {
-            if (currentConversationId) {
-                localStorage.setItem(`conversation-${currentConversationId}`, JSON.stringify(chatHistory));
-            }
-        }
-
-        function disableUI() {
-            const messageInput = document.getElementById('message-input');
-            const sendButton = document.getElementById('send-button');
-            const newChatButton = document.getElementById('new-chat-button');
-            const modelSelect = document.getElementById('model-select');
-            const fetchModelsButton = document.getElementById('fetch-models-button');
-            const imageUploadButton = document.getElementById('upload-image-button');
-            const imageModelSelect = document.getElementById('image-model-select');
-            const fetchImageModelsButton = document.getElementById('fetch-image-models-button');
-
-            if (messageInput) messageInput.disabled = true;
-            if (sendButton) sendButton.disabled = true;
-            if (newChatButton) newChatButton.disabled = true;
-            if (modelSelect) modelSelect.disabled = true;
-            if (fetchModelsButton) fetchModelsButton.disabled = true;
-            if (imageUploadButton) imageUploadButton.disabled = true;
-            if (imageModelSelect) imageModelSelect.disabled = true;
-            if (fetchImageModelsButton) fetchImageModelsButton.disabled = true;
-        }
-
-        function enableUI() {
-            const messageInput = document.getElementById('message-input');
-            const sendButton = document.getElementById('send-button');
-            const newChatButton = document.getElementById('new-chat-button');
-            const modelSelect = document.getElementById('model-select');
-            const fetchModelsButton = document.getElementById('fetch-models-button');
-            const imageUploadButton = document.getElementById('upload-image-button');
-            const imageModelSelect = document.getElementById('image-model-select');
-            const fetchImageModelsButton = document.getElementById('fetch-image-models-button');
-
-            if (messageInput) messageInput.disabled = false;
-            if (sendButton) sendButton.disabled = false;
-            if (newChatButton) newChatButton.disabled = false;
-            if (modelSelect) modelSelect.disabled = false;
-            if (fetchModelsButton) fetchModelsButton.disabled = false;
-            if (imageUploadButton) imageUploadButton.disabled = false;
-            if (imageModelSelect) imageModelSelect.disabled = false;
-            if (fetchImageModelsButton) fetchImageModelsButton.disabled = false;
-        }
-
-        function handlePaste(event) {
-            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-            for (let i = 0; i < items.length; i++) {
-                const item = items[i];
-                if (item.type.indexOf('image') !== -1) {
-                    const blob = item.getAsFile();
-                    const reader = new FileReader();
-                    reader.onloadend = async () => {
-                        const base64Image = reader.result.split(',')[1];
-                        handlePastedImage(base64Image);
-                    };
-                    reader.readAsDataURL(blob);
-                    event.preventDefault();
-                }
-            }
-        }
-
-        async function handlePastedImage(base64Image) {
-            let serverUrl = document.getElementById('image-server-url').value.trim();
-            const apiKey = document.getElementById('image-api-key').value.trim();
-            const modelId = document.getElementById('image-model-select').value;
-            const serverUrlVersion = document.getElementById('image-server-url-version').value.trim();
-            if (!serverUrl || !serverUrlVersion || !apiKey || !modelId) {
-                alert('請填寫所有必要的圖片欄位。');
-                return;
             }
 
-            const requestUrl = `${serverUrl}/${serverUrlVersion}`;
+            function updateSystemPrompt() {
+                const systemPrompt = document.getElementById('system-prompt').value.trim();
+                const systemIndex = chatHistory.findIndex(([sender]) => sender === 'system');
 
-            const payload = {
-                messages: [
-                    {
-                        "role": "user",
-                        "content": [
-                            {"type": "text", "text": "What's in this image?"},
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": `data:image/jpeg;base64,${base64Image}`,
-                                },
-                            },
-                        ],
-                    }
-                ],
-                model: modelId
-            };
-
-            isSending = true;
-            disableUI();
-
-            try {
-                console.log('Sending image to:', requestUrl);
-                console.log('Image payload:', payload);
-
-                const response = await fetch(`${requestUrl}/chat/completions`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`,
-                        'Content-Type': 'application/json',
-                        'ngrok-skip-browser-warning': 'true'
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorMessage = await response.text();
-                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorMessage}`);
-                }
-
-                const data = await response.json();
-                console.log('Image response:', data);
-
-                const assistantMessage = data.choices[0].message.content;
-                appendMessage('assistant', assistantMessage);
-                chatHistory.push(['assistant', assistantMessage]);
-                saveConversation();
-            } catch (error) {
-                console.error('通訊錯誤:', error);
-                alert(`通訊錯誤，請檢查伺服器網址 (${serverUrl}) 和API金鑰 (${apiKey})。\n錯誤訊息: ${error.message}`);
-            } finally {
-                isSending = false;
-                enableUI();
-            }
-        }
-
-        function updateSystemPrompt() {
-            const systemPrompt = document.getElementById('system-prompt').value.trim();
-            const systemIndex = chatHistory.findIndex(([sender]) => sender === 'system');
-
-            if (systemIndex !== -1) {
-                chatHistory[systemIndex][1] = systemPrompt;
-            } else {
-                chatHistory.unshift(['system', systemPrompt]);
-            }
-
-            saveConversation();
-        }
-
-        async function markActiveConversation(conversationId) {
-            const conversationItems = document.querySelectorAll('#conversation-list div');
-            conversationItems.forEach(item => {
-				const input = item.querySelector('input');
-                if (input && input.value === conversationId) {
-                    item.classList.add('active');
+                if (systemIndex !== -1) {
+                    chatHistory[systemIndex][1] = systemPrompt;
                 } else {
-                    item.classList.remove('active');
+                    chatHistory.unshift(['system', systemPrompt]);
                 }
-            });
-        }
 
-        function confirmDeleteConversation(conversationId) {
-            if (confirm('確定要刪除此對話嗎？')) {
-                deleteConversation(conversationId);
+                saveConversation();
             }
-        }
 
-		async function deleteConversation(conversationId) {
-			try {
-				// 1. 刪除對話
-				const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
-				delete conversationList[conversationId];
-				localStorage.setItem('conversationList', JSON.stringify(conversationList));
-				
-				// 2. 等待 DOM 更新完成
-				await new Promise(resolve => requestAnimationFrame(resolve));
-				
-				// 3. 重新載入對話列表
-				await loadConversationList();
-				
-				// 4. 確保 DOM 已更新
-				await new Promise(resolve => requestAnimationFrame(resolve));
-				
-				const updatedList = JSON.parse(localStorage.getItem('conversationList')) || {};
-				const conversationIds = Object.keys(updatedList);
-				
-				if (conversationIds.length > 0) {
-					try {
-						currentConversationId = conversationIds[conversationIds.length - 1];
-						const chatHistory = JSON.parse(localStorage.getItem(`conversation-${currentConversationId}`)) || [];
-						
-						// 5. 更新 system prompt 並等待渲染
-						const systemPrompt = chatHistory.find(([sender]) => sender === 'system')?.[1] || '';
-						const systemPromptElement = document.getElementById('system-prompt');
-						if (systemPromptElement) {
-							systemPromptElement.value = systemPrompt;
-							await new Promise(resolve => requestAnimationFrame(resolve));
-						}
-						
-						// 6. 逐條添加消息，每次都等待渲染完成
-						if (Array.isArray(chatHistory)) {
-							for (const [sender, message] of chatHistory) {
-								if (sender === 'system') {
-									messageCounter += 1;
-									continue;
-								}
-								await appendMessage(sender, message);
-								// 等待消息渲染
-								await new Promise(resolve => setTimeout(resolve, 50));
-							}
-						}
-						
-						// 7. 標記活動對話
-						await new Promise(resolve => {
-							requestAnimationFrame(() => {
-								markActiveConversation(currentConversationId);
-								resolve();
-							});
-						});
-						
-					} catch (error) {
-						console.error('Error loading conversation:', error);
-						await startNewChat();
-					}
-				} else {
-					await startNewChat();
-				}
-			} catch (error) {
-				console.error('Error in deleteConversation:', error);
-			}
-		}
-		
-		
-        function confirmDeleteMessage(index) {
-            if (confirm('確定要刪除此訊息嗎？')) {
-                deleteMessage(index);
+            async function markActiveConversation(conversationId) {
+                const conversationItems = document.querySelectorAll('#conversation-list div');
+                conversationItems.forEach(item => {
+                    const input = item.querySelector('input');
+                    if (input && input.value === conversationId) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
             }
-        }
 
-        function deleteMessage(index) {
-            chatHistory.splice(index, 1);
-            saveConversation();
-            loadConversation(currentConversationId);
-        }
-
-        function toggleSettingsContainer() {
-            const settingsContainer = document.getElementById('settings-container');
-            const accordionButton = settingsContainer.querySelector('.accordion-button');
-            const accordionContent = settingsContainer.querySelector('.accordion-content');
-
-            if (accordionContent.style.display === 'block') {
-                accordionContent.style.display = 'none';
-                accordionButton.textContent = '設定';
-            } else {
-                accordionContent.style.display = 'block';
-                accordionButton.textContent = '收起設定';
+            function confirmDeleteConversation(conversationId) {
+                if (confirm('確定要刪除此對話嗎？')) {
+                    deleteConversation(conversationId);
+                }
             }
-        }
 
-        function toggleImageSettingsContainer() {
-            const imageSettingsContainer = document.getElementById('image-settings-container');
-            const accordionButton = imageSettingsContainer.querySelector('.accordion-button');
-            const accordionContent = imageSettingsContainer.querySelector('.accordion-content');
+            async function deleteConversation(conversationId) {
+                try {
+                    // 1. 刪除對話
+                    const conversationList = JSON.parse(localStorage.getItem('conversationList')) || {};
+                    delete conversationList[conversationId];
+                    localStorage.setItem('conversationList', JSON.stringify(conversationList));
 
-            if (accordionContent.style.display === 'block') {
-                accordionContent.style.display = 'none';
-                accordionButton.textContent = '圖片設定';
-            } else {
-                accordionContent.style.display = 'block';
-                accordionButton.textContent = '收起圖片設定';
+                    // 2. 等待 DOM 更新完成
+                    await new Promise(resolve => requestAnimationFrame(resolve));
+
+                    // 3. 重新載入對話列表
+                    await loadConversationList();
+
+                    // 4. 確保 DOM 已更新
+                    await new Promise(resolve => requestAnimationFrame(resolve));
+
+                    const updatedList = JSON.parse(localStorage.getItem('conversationList')) || {};
+                    const conversationIds = Object.keys(updatedList);
+
+                    if (conversationIds.length > 0) {
+                        try {
+                            currentConversationId = conversationIds[conversationIds.length - 1];
+                            const chatHistory = JSON.parse(localStorage.getItem(`conversation-${currentConversationId}`)) || [];
+
+                            // 5. 更新 system prompt 並等待渲染
+                            const systemPrompt = chatHistory.find(([sender]) => sender === 'system')?.[1] || '';
+                            const systemPromptElement = document.getElementById('system-prompt');
+                            if (systemPromptElement) {
+                                systemPromptElement.value = systemPrompt;
+                                await new Promise(resolve => requestAnimationFrame(resolve));
+                            }
+
+                            // 6. 逐條添加消息，每次都等待渲染完成
+                            if (Array.isArray(chatHistory)) {
+                                for (const [sender, message] of chatHistory) {
+                                    if (sender === 'system') {
+                                        messageCounter += 1;
+                                        continue;
+                                    }
+                                    await appendMessage(sender, message);
+                                    // 等待消息渲染
+                                    await new Promise(resolve => setTimeout(resolve, 50));
+                                }
+                            }
+
+                            // 7. 標記活動對話
+                            await new Promise(resolve => {
+                                requestAnimationFrame(() => {
+                                    markActiveConversation(currentConversationId);
+                                    resolve();
+                                });
+                            });
+
+                        } catch (error) {
+                            console.error('Error loading conversation:', error);
+                            await startNewChat();
+                        }
+                    } else {
+                        await startNewChat();
+                    }
+                } catch (error) {
+                    console.error('Error in deleteConversation:', error);
+                }
             }
-        }
 
-        async function toggleMermaidToSVG(codeElement) {
-            const mermaidCode = codeElement.cloneNode(true);
-            mermaidCode.querySelectorAll('.copy-button, .tab-button').forEach(btn => btn.remove());
-            const mermaidText = mermaidCode.innerText.trim();
 
-            try {
-                // Hide the original code element
-                codeElement.style.display = 'none';
-
-                // Create a new div to hold the SVG
-                const svgContainer = document.createElement('div');
-                const { svg } = await mermaid.render('mermaid-svg-' + Date.now(), mermaidText );
-                svgContainer.innerHTML = svg;
-                svgContainer.classList.add('container-svg');
-
-                // Insert the SVG container after the original code element
-                codeElement.parentNode.insertBefore(svgContainer, codeElement.nextSibling);
-
-                // Add a button to switch back to the original code
-                const switchBackButton = document.createElement('button');
-                switchBackButton.className = 'tab-button';
-                switchBackButton.textContent = '↹';
-                switchBackButton.onclick = () => toggleSVGToMermaid(codeElement, svgContainer, switchBackButton);
-                codeElement.parentNode.insertBefore(switchBackButton, codeElement.nextSibling);
-            } catch (error) {
-                console.error('Mermaid rendering failed:', error);
-                alert('Mermaid 圖形轉換失敗，請檢查 Mermaid 語法。');
+            function confirmDeleteMessage(index) {
+                if (confirm('確定要刪除此訊息嗎？')) {
+                    deleteMessage(index);
+                }
             }
-        }
 
-        function toggleSVGToMermaid(codeElement, svgContainer, switchBackButton) {
-            // Show the original code element
-            codeElement.style.display = '';
-
-            // Remove the SVG container and the switch back button
-            svgContainer.remove();
-            switchBackButton.remove();
-        }
-        function toggleSystemPromptContainer() {
-            const systemPromptContainer = document.getElementById('system-prompt-container');
-            const accordionButton = systemPromptContainer.querySelector('.accordion-button');
-            const accordionContent = systemPromptContainer.querySelector('.accordion-content');
-            if (accordionContent.style.display === 'block') {
-                accordionContent.style.display = 'none';
-                accordionButton.textContent = 'System 提示';
-            } else {
-                accordionContent.style.display = 'block';
-                accordionButton.textContent = '收起 System 提示';
+            function deleteMessage(index) {
+                chatHistory.splice(index, 1);
+                saveConversation();
+                loadConversation(currentConversationId);
             }
-        }
-        function copyMarkdown(index) {
-            if (!chatHistory[index]) return;
-            const text = chatHistory[index][1];
-            navigator.clipboard.writeText(text).then(() => {
-                // 可加提示
-            });
-        }
-        function copyPlainText(index) {
-            if (!chatHistory[index]) return;
-            const markdown = chatHistory[index][1];
-            // 使用 marked.parse 轉 html，再 strip tags
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = marked.parse(markdown);
-            const plainText = tempDiv.innerText;
-            navigator.clipboard.writeText(plainText).then(() => {
-                // 可加提示
-            });
-        }
-    </script>
+
+            function toggleSettingsContainer() {
+                const settingsContainer = document.getElementById('settings-container');
+                const accordionButton = settingsContainer.querySelector('.accordion-button');
+                const accordionContent = settingsContainer.querySelector('.accordion-content');
+
+                if (accordionContent.style.display === 'block') {
+                    accordionContent.style.display = 'none';
+                    accordionButton.textContent = '設定';
+                } else {
+                    accordionContent.style.display = 'block';
+                    accordionButton.textContent = '收起設定';
+                }
+            }
+
+            function toggleImageSettingsContainer() {
+                const imageSettingsContainer = document.getElementById('image-settings-container');
+                const accordionButton = imageSettingsContainer.querySelector('.accordion-button');
+                const accordionContent = imageSettingsContainer.querySelector('.accordion-content');
+
+                if (accordionContent.style.display === 'block') {
+                    accordionContent.style.display = 'none';
+                    accordionButton.textContent = '圖片設定';
+                } else {
+                    accordionContent.style.display = 'block';
+                    accordionButton.textContent = '收起圖片設定';
+                }
+            }
+
+            async function toggleMermaidToSVG(codeElement) {
+                const mermaidCode = codeElement.cloneNode(true);
+                mermaidCode.querySelectorAll('.copy-button, .tab-button').forEach(btn => btn.remove());
+                const mermaidText = mermaidCode.innerText.trim();
+
+                try {
+                    // Hide the original code element
+                    codeElement.style.display = 'none';
+
+                    // Create a new div to hold the SVG
+                    const svgContainer = document.createElement('div');
+                    const { svg } = await mermaid.render('mermaid-svg-' + Date.now(), mermaidText);
+                    svgContainer.innerHTML = svg;
+                    svgContainer.classList.add('container-svg');
+
+                    // Insert the SVG container after the original code element
+                    codeElement.parentNode.insertBefore(svgContainer, codeElement.nextSibling);
+
+                    // Add a button to switch back to the original code
+                    const switchBackButton = document.createElement('button');
+                    switchBackButton.className = 'tab-button';
+                    switchBackButton.textContent = '↹';
+                    switchBackButton.onclick = () => toggleSVGToMermaid(codeElement, svgContainer, switchBackButton);
+                    codeElement.parentNode.insertBefore(switchBackButton, codeElement.nextSibling);
+                } catch (error) {
+                    console.error('Mermaid rendering failed:', error);
+                    alert('Mermaid 圖形轉換失敗，請檢查 Mermaid 語法。');
+                }
+            }
+
+            function toggleSVGToMermaid(codeElement, svgContainer, switchBackButton) {
+                // Show the original code element
+                codeElement.style.display = '';
+
+                // Remove the SVG container and the switch back button
+                svgContainer.remove();
+                switchBackButton.remove();
+            }
+            function toggleSystemPromptContainer() {
+                const systemPromptContainer = document.getElementById('system-prompt-container');
+                const accordionButton = systemPromptContainer.querySelector('.accordion-button');
+                const accordionContent = systemPromptContainer.querySelector('.accordion-content');
+                if (accordionContent.style.display === 'block') {
+                    accordionContent.style.display = 'none';
+                    accordionButton.textContent = 'System 提示';
+                } else {
+                    accordionContent.style.display = 'block';
+                    accordionButton.textContent = '收起 System 提示';
+                }
+            }
+            function copyMarkdown(index) {
+                if (!chatHistory[index]) return;
+                const text = chatHistory[index][1];
+                navigator.clipboard.writeText(text).then(() => {
+                    // 可加提示
+                });
+            }
+            function copyPlainText(index) {
+                if (!chatHistory[index]) return;
+                const markdown = chatHistory[index][1];
+                // 使用 marked.parse 轉 html，再 strip tags
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = marked.parse(markdown);
+                const plainText = tempDiv.innerText;
+                navigator.clipboard.writeText(plainText).then(() => {
+                    // 可加提示
+                });
+            }
+        </script>
     </div> <!-- end #container -->
 </body>
+
 </html>
